@@ -7,9 +7,9 @@ Update: 2024-04-20: Read in the view item metadata from an external file.
 Description: Creates a new AGOL feature layer view from an existing hosted 
 feature layer. The command line argument is the item ID for the hosted feature
 layer. The external file, commodity_attrs.py, defines a dictionary for each
-commodity that includes service, name, item title, and other item details.
+commodity that includes service, name, item title, and other item details. 
 It also includes the list of fields that should be visible for the view. 
-Processing includes updating the view item description page as well as setting
+Processing includes updating the view item description page as well as setting 
 delete protection and moving the view to a different folder.
 
 Command example: pyton create_commodity_view.py d534e5eb24b749ba9efea678b5d9612e
