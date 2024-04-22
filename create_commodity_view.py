@@ -8,9 +8,10 @@ Description: Creates a new AGOL feature layer view from an existing hosted
 feature layer. The command line argument is the item ID for the hosted feature
 layer. The external file, commodity_attrs.py, defines a dictionary for each
 commodity that includes service, name, item title, and other item details. 
-It also includes the list of fields that should be visible for the view. 
-Processing includes updating the view item description page as well as setting 
-delete protection and moving the view to a different folder.
+It also includes the list of fields that should be visible for the view. The code
+iterates through each dictionary element and creates a new view based on this
+information. Processing includes updating the view item description page as well 
+as setting delete protection and moving the view to a different folder.
 
 Command example: pyton create_commodity_view.py d534e5eb24b749ba9efea678b5d9612e
 
@@ -20,6 +21,7 @@ TODOs
 - Ensure the description_template reads as you would like it
 - Ensure the credits read as you would like it.
 - Ensure the license information is correct for your data.
+- Ensure you have the proper AGOL credentials listed.
 
 """
 
@@ -29,15 +31,18 @@ import arcgis
 from arcgis.gis import GIS
 from arcgis.features import FeatureLayerCollection
 import sys
-from commodity_attrs_DEV import commodity_meta
+from commodity_attrs import commodity_meta
 
 # Constants
 #
-move_to_folder = "AG Census"
+AGOL_USER_NAME = "mgilbert_content"
+AGOL_PROFILE_NAME = "mgilbert_content"
 
-snippet_template = "[REPLACE] in the United States at the county level as reported in the 2022 Census of Agriculture."
+MOVE_TO_FOLDER = "AG Census"
 
-description_template = "<div>The <a href='https://www.nass.usda.gov/AgCensus/' target='_blank'>Census of Agriculture</a>, \
+SNIPPET_TEMPLATE = "[REPLACE] in the United States at the county level as reported in the 2022 Census of Agriculture."
+
+DESCRIPTION_TEMPLATE = "<div>The <a href='https://www.nass.usda.gov/AgCensus/' target='_blank'>Census of Agriculture</a>, \
 produced by the United States Department of Agriculture (USDA), provides a complete count of America's farms, ranches \
 and the people who grow our food. The census is conducted every five years, most recently in 2022, and provides an in-depth \
 look at the agricultural industry.</div><div><br /></div><div>This layer was produced from data obtained from the USDA \
@@ -54,9 +59,9 @@ have been codded in the data as -999, -888, and -777 respectively.</div><div><ul
 For data collection purposes in Alaska, one or more county equivalent entities (borough, census area, city, municipality) \
 are included in an agriculture census area.</div>"
 
-credits = "Esri, US Census Bureau, US Department of Agriculture"
+CREDITS = "Esri, US Census Bureau, US Department of Agriculture"
 
-license = "<img src='https://downloads.esri.com/blogs/arcgisonline/esrilogo_new.png' /> This work is licensed under \
+LICENSE = "<img src='https://downloads.esri.com/blogs/arcgisonline/esrilogo_new.png' /> This work is licensed under \
 the Esri Master License Agreement.<br /><div><a href='https://goto.arcgis.com/termsofuse/viewsummary' target='_blank'><b>\
 View Summary</b></a> | <a href='https://goto.arcgis.com/termsofuse/viewtermsofuse' target='_blank'><b>View Terms of Use</b>\
 </a></div>"
@@ -74,8 +79,8 @@ def main():
 
         view_name = meta['v_name']
         title = meta['v_title']
-        snippet = snippet_template.replace("[REPLACE]", meta['snippet_lead'])
-        description = description_template.replace("[REPLACE]", meta['phenom'])
+        snippet = SNIPPET_TEMPLATE.replace("[REPLACE]", meta['snippet_lead'])
+        description = DESCRIPTION_TEMPLATE.replace("[REPLACE]", meta['phenom'])
         tags = meta['tags']
         visible_fields = meta['fields']
 
@@ -84,9 +89,7 @@ def main():
         # This command uses a previously saved local profile to connect to the GIS.
         # See https://developers.arcgis.com/python/guide/working-with-different-authentication-schemes/ for additional details
         #
-        # Create a profile so I don't have to enter credentials after the first time
-        #
-        dest_org = GIS("https://arcgis.com", username="mgilbert_content", profile="mgilbert_content")
+        dest_org = GIS("https://arcgis.com", username=AGOL_USER_NAME, profile=AGOL_PROFILE_NAME)
         print(f"\tSuccessfully logged in as: {dest_org.properties.user.username}")
 
         # Search for the source hosted feature layer
@@ -102,7 +105,7 @@ def main():
 
         # Move to folder
         #
-        mv_status = view_item.move(move_to_folder)
+        mv_status = view_item.move(MOVE_TO_FOLDER)
         print(f"\tView moved: {mv_status['success']}")
 
         # Update the title and other properties
@@ -113,8 +116,8 @@ def main():
                             'description': description,
                             'tags': tags,
                             'snippet': snippet,
-                            'accessInformation': credits,
-                            'licenseInfo': license
+                            'accessInformation': CREDITS,
+                            'licenseInfo': LICENSE
                         })
 
         print(f"\tView renamed to {title}")
