@@ -11,9 +11,12 @@ commodity that includes service, name, item title, and other item details.
 It also includes the list of fields that should be visible for the view. The code
 iterates through each dictionary element and creates a new view based on this
 information. Processing includes updating the view item description page as well 
-as setting delete protection and moving the view to a different folder.
+as setting delete protection and moving the view to a different folder. This tool
+assumes that only one layer exists in the service, e.g., layer[0].
 
 Command example: pyton create_commodity_view.py d534e5eb24b749ba9efea678b5d9612e
+
+NOTE: This script assumes that only one layer exists in the service, e.g., layer[0]
 
 TODOs
 - Confirm the name of the 'move_to' folder.
@@ -131,7 +134,8 @@ def main():
 
         # Get a list of fields from the view layer
         #
-        view_flds = view_item.layers[0].properties.fields
+        item_lyr = view_item.layers[0]
+        view_flds = item_lyr.properties.fields
 
         # Set only the fields we want to visible, also include OID
         #
@@ -146,7 +150,7 @@ def main():
         # Update the view definition
         #
         layer_def = {"fields": vis_flds}
-        view_item.layers[0].manager.update_definition(layer_def)
+        item_lyr.manager.update_definition(layer_def)
         print(f"\tFeature layer view created\n\t ItemID : {view_item.id}\n\t URL:{view_item.url}")
 
 
