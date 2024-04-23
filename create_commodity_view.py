@@ -19,7 +19,8 @@ Command example: pyton create_commodity_view.py d534e5eb24b749ba9efea678b5d9612e
 NOTE: This script assumes that only one layer exists in the service, e.g., layer[0]
 
 TODOs
-- Confirm the name of the 'move_to' folder.
+- Update AGOL_USER_NAME and AGOL_PROFILE_NAME
+- Update MOVE_TO_FOLDER
 - Ensure the snippet_template reads as you would like it.
 - Ensure the description_template reads as you would like it
 - Ensure the credits read as you would like it.
@@ -38,10 +39,10 @@ from commodity_attrs import commodity_meta
 
 # Constants
 #
-AGOL_USER_NAME = "mgilbert_content"
-AGOL_PROFILE_NAME = "mgilbert_content"
+AGOL_USER_NAME = "put_username_here"
+AGOL_PROFILE_NAME = "put_profile_name_here"
 
-MOVE_TO_FOLDER = "AG Census"
+MOVE_TO_FOLDER = "put_AGOL_folder_name_here"
 
 SNIPPET_TEMPLATE = "[REPLACE] in the United States at the county level as reported in the 2022 Census of Agriculture."
 
