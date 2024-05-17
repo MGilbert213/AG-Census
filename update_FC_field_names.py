@@ -12,10 +12,6 @@ Command example: python update_FC_field_names.py
                         ag_pivot_2022_county_sel_cmdty
                         C:\\path_to_file\\UPDATE_ag_pivot_2022_county_sel_cmdty_FC.xlsx
 
-TODOs:
-- Update path_to_file for the data file
-- Update path_to_workspace for the workspace
-
 """
 
 # Imports
