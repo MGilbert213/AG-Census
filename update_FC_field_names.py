@@ -3,9 +3,10 @@
 File: update_FC_field_names.py
 Author: Mark E. Gilbert
 Date: 2024-04-16: Converted from Notebook to srcipt file.
-Description: This script is used to update the original feature class attribute names to something shorter
-since publishing using the Python API does not support the larger character length names. The attribute 
-alias and other properties get updated using Lisa B's Python script in a later step.
+Description: This script updates the original feature class attribute names and
+alias naems. The name field must be shortened since field names in AGOL are limited
+to 64 characters publishing using the Python API will result in an error. Other
+field properties get updated using Lisa B's Python script in a later step.
 
 Command example: python update_FC_field_names.py
                         "C:\\path_to_workspace\\Ag Census 2022.gdb"
@@ -41,19 +42,17 @@ def main():
 
     src_name_dict = src_name_data.set_index("Source_Name").T.to_dict("list")
 
-    fld_name_dict = {}
-
     for fld in arcpy.ListFields(in_fc_name):
         if fld.name in src_name_dict:
             print(f"\tUpdating {fld.name} to {src_name_dict[fld.name][0]}")
             try:
-                arcpy.management.AlterField(in_fc_name, fld.name, src_name_dict[fld.name][0])
+                arcpy.management.AlterField(in_fc_name, fld.name, src_name_dict[fld.name][0], src_name_dict[fld.name][1])
                 
             except arcpy.ExecuteError:
                 print(arcpy.GetMessages())
                 
         else:
-            print("\tNot found")
+            print("\tField not found in spreadsheet")
  
     elapsed_time = time.time() - begin_time
     print(f"Processing complete.\nOverall Elapsed time: {elapsed_time:0,.2f} seconds]")
