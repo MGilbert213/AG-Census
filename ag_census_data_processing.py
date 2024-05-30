@@ -7,7 +7,7 @@ Description: End to end ag census processing. Begins by downloading the complete
 datafile, extracts and loads into ArcGIS Pro, processess it by pivioting the data
 and subsetting, cleans attribute names.
 
-Command example: python ag_census_dta_processing.py 2002 "county"
+Command example: python ag_census_data_processing.py 2002 "county"
 
 """
 
@@ -31,9 +31,9 @@ import time
 LOCAL_PATH = r'C:\Users\mark9020\Downloads'
 
 COMMODITY_DESC = [
-    'ALMONDS', 'ANIMAL TOTALS', 'BARLEY', 'CATTLE', 'CHICKENS', 'CORN', 'COTTON', 'CROP TOTALS', 'GOVT PROGRAMS',
-    'GRAIN', 'GRAPES', 'HAY', 'HOGS', 'LABOR', 'MACHINERY TOTALS', 'MILK', 'RICE', 'SORGHUM', 'SOYBEANS',
-    'TRACTORS', 'TRUCKS', 'TURKEYS', 'WHEAT'
+    'ALMONDS', 'ANIMAL TOTALS', 'BARLEY', 'CATTLE', 'CHICKENS', 'CORN', 'COTTON', 'CROP TOTALS', 
+    'FARM OPERATIONS', 'GOVT PROGRAMS', 'GRAIN', 'GRAPES', 'HAY', 'HOGS', 'LABOR', 'MACHINERY TOTALS', 
+    'MILK', 'PRODUCERS', 'RICE', 'SORGHUM', 'SOYBEANS', 'TRACTORS', 'TRUCKS', 'TURKEYS', 'WHEAT'
     ]
 
 URL_TEMPLATE = r"https://www.nass.usda.gov/datasets/qs.census[VINTAGE].txt.gz"
@@ -459,7 +459,7 @@ def main():
     else:
         print(f"\tError: something went wrong rtn_process {rtn_process}")
 
-    # Subset the source dataset by geograpy type and run Pivot Table
+    # Subset the source dataset by geography type and run Pivot Table
     # Pass the list of commodities to include
     #
     print(f"\tSubsetting data and pivoting...")
