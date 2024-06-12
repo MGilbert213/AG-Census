@@ -29,11 +29,11 @@ import time
 # TODO: FLD_MAP_TEMPLATE also needs to reflect the actual location of the downloaded file.
 #
 LOCAL_PATH = r'C:\Users\mark9020\Downloads'
-
 COMMODITY_DESC = [
-    'ALMONDS', 'ANIMAL TOTALS', 'BARLEY', 'CATTLE', 'CHICKENS', 'CORN', 'COTTON', 'CROP TOTALS', 
-    'FARM OPERATIONS', 'GOVT PROGRAMS', 'GRAIN', 'GRAPES', 'HAY', 'HOGS', 'LABOR', 'MACHINERY TOTALS', 
-    'MILK', 'PRODUCERS', 'RICE', 'SORGHUM', 'SOYBEANS', 'TRACTORS', 'TRUCKS', 'TURKEYS', 'WHEAT'
+    'ALMONDS', 'ANIMAL TOTALS', 'BARLEY', 'CATTLE', 'CHICKENS', 'CORN', 'COTTON', 
+    'CROP TOTALS', 'FARM OPERATIONS', 'GOVT PROGRAMS', 'GRAIN', 'GRAPES', 'HAY', 'HOGS', 'LABOR', 
+    'MACHINERY TOTALS', 'MILK', 'PRODUCERS', 'RICE', 'SORGHUM', 'SOYBEANS', 'TRACTORS', 'TRUCKS', 
+    'TURKEYS', 'WHEAT'
     ]
 
 URL_TEMPLATE = r"https://www.nass.usda.gov/datasets/qs.census[VINTAGE].txt.gz"
@@ -97,10 +97,14 @@ def download_file(url, path):
 
     file_name = os.path.basename(url)
     response = requests.get(url)
-    file_path = f"{path}/{file_name}"
-    
-    with open(file_path, "wb") as file:
-        file.write(response.content)
+    if response.status_code == 200:
+        file_path = f"{path}/{file_name}"
+        
+        with open(file_path, "wb") as file:
+            file.write(response.content)
+    else:
+        file_path = None
+        file_name = "File doesn't exit."
     
     return file_path, file_name
 
@@ -430,6 +434,10 @@ def main():
     #
     print("\tDownloading file...")
     dl_file_path, dl_file_name = download_file(download_url, LOCAL_PATH)
+    if dl_file_path is None:
+        print(f"\t{dl_file_name}")
+        sys.exit()
+        
     print(f"\t{dl_file_name} downloaded from {download_url}")
 
     # Decompress data file
