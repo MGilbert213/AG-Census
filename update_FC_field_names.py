@@ -4,8 +4,8 @@ File: update_FC_field_names.py
 Author: Mark E. Gilbert
 Date: 2024-04-16: Converted from Notebook to srcipt file.
 Description: This script updates the original feature class attribute names and
-alias naems. The name field must be shortened since field names in AGOL are limited
-to 64 characters publishing using the Python API will result in an error. Other
+alias names. The name field must be shortened since field names in AGOL are limited
+to 64 characters when publishing using the Python API and will result in an error if longer. Other
 field properties get updated using Lisa B's Python script in a later step.
 
 Command example: python update_FC_field_names.py
